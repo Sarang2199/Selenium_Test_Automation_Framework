@@ -1,0 +1,78 @@
+package mmt.ui.pages;
+
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.devtools.idealized.Javascript;
+import org.openqa.selenium.support.PageFactory;
+
+import mmt.ui.frameworksetup.BaseSetup;
+import mmt.ui.frameworksetup.ThreadPackage;
+import mmt.ui.utility.BaseLocators;
+import mmt.ui.utility.BasePage;
+import mmt.ui.utility.Utility;
+
+public class HomePage extends BaseSetup {
+	  WebDriver driver=null;
+		public HomePage(WebDriver driver) {
+			PageFactory.initElements(driver, this);
+			this.driver = driver;
+			
+		}
+		Utility utils = new Utility();
+		 
+		JavascriptExecutor js = (JavascriptExecutor)ThreadPackage.getInstance().getDriver();
+	    BasePage bspage = new BasePage();
+		public void verifyCloseBtn() throws InterruptedException {
+			utils.info("Close the advertisement if visible");
+			try {
+				
+			bspage.verifyExists(By.xpath(BaseLocators.frameName));
+			driver.switchTo().frame(bspage.getWebElementLocator(BaseLocators.frameName));
+			boolean adv = bspage.getWebElementLocator(BaseLocators.closeBtn,"close").isDisplayed();
+			//System.out.println(adv);
+			if(adv) {
+				utils.info("Close button visible");
+				bspage.getWebElementLocator(BaseLocators.closeBtn,"close").click();	
+			}
+			else {
+				utils.info("Advertisement is not visible");
+			}}
+			catch(Exception e){
+				System.out.println("Exception is --- "+e);
+			}
+			finally {
+				js.executeScript("arguments[0].click();",bspage.getWebElementLocator(BaseLocators.closeBtn,"close"));
+				js.executeScript("arguments[0].click();", bspage.getWebElementLocator(BaseLocators.clickanywhere));
+			}
+		}
+		
+		public void verifyLogin() {
+			contiuneBtndisabled();
+			bspage.getWebElementLocator(BaseLocators.inputPlaceholder,"Enter email or mobile number").isDisplayed();
+			bspage.getWebElementLocator(BaseLocators.inputid,"username").click();
+			bspage.getWebElementLocator(BaseLocators.inputid,"username").sendKeys("ssarangghayal@gmail.com");
+			contiuneBtndisabled();
+			
+		}
+		public void contiuneBtndisabled() {
+			if(!bspage.getWebElementLocator(BaseLocators.continuebtn).isEnabled()) {
+				utils.info("Continue btn is disabled");
+			}
+			else {
+				utils.info("Continue btn is enabled");
+			}
+		}
+		
+	   public void verifyTabSelected() {
+		   utils.info("Verify Flights tab is already selected");
+		   if(bspage.getWebElementLocator(BaseLocators.tabSelected,"Flights").isDisplayed()) {
+			   bspage.getWebElementLocator(BaseLocators.radiobutton,"oneWayTrip","selected").isDisplayed();
+			   bspage.getWebElementLocator(BaseLocators.radiobutton,"roundTrip","").isDisplayed();
+			   bspage.getWebElementLocator(BaseLocators.radiobutton,"mulitiCityTrip","").isDisplayed();
+
+
+		   }
+	   }
+	}
