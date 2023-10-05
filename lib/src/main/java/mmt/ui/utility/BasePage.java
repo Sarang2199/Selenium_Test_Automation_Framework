@@ -42,6 +42,9 @@ public class BasePage extends BaseSetup{
 			 System.out.println("WebElement not exists");
 		 }
 	 }
+	 public synchronized static By getLocator(String xpath, String value) {
+		 return By.xpath(String.format(xpath, value));
+	 }
 
 	public synchronized WebElement getWebElementLocator(String locator, String value) {
 			

@@ -6,6 +6,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.devtools.idealized.Javascript;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
 
 import mmt.ui.frameworksetup.BaseSetup;
 import mmt.ui.frameworksetup.ThreadPackage;
@@ -27,24 +28,35 @@ public class HomePage extends BaseSetup {
 		public void verifyCloseBtn() throws InterruptedException {
 			utils.info("Close the advertisement if visible");
 			try {
-				
-			bspage.verifyExists(By.xpath(BaseLocators.frameName));
-			driver.switchTo().frame(bspage.getWebElementLocator(BaseLocators.frameName));
-			boolean adv = bspage.getWebElementLocator(BaseLocators.closeBtn,"close").isDisplayed();
-			//System.out.println(adv);
+			try {	
+			bspage.verifyExists(BasePage.getLocator(BaseLocators.classContians,"close"));}
+			//driver.switchTo().frame(bspage.getWebElementLocator(BaseLocators.frameName));}
+			catch(Exception e) {
+			boolean adv = bspage.getWebElementLocator(BaseLocators.classContians,"close").isDisplayed();
+		
+			
 			if(adv) {
 				utils.info("Close button visible");
-				bspage.getWebElementLocator(BaseLocators.closeBtn,"close").click();	
+				js.executeScript("arguments[0].click();",bspage.getWebElementLocator(BaseLocators.classContians,"close"));	
 			}
 			else {
 				utils.info("Advertisement is not visible");
-			}}
+			}}}
 			catch(Exception e){
 				System.out.println("Exception is --- "+e);
 			}
-			finally {
-				js.executeScript("arguments[0].click();",bspage.getWebElementLocator(BaseLocators.closeBtn,"close"));
-				js.executeScript("arguments[0].click();", bspage.getWebElementLocator(BaseLocators.clickanywhere));
+			finally {boolean adv = bspage.getWebElementLocator(BaseLocators.classContians,"close").isDisplayed();
+		    verifyLogin();
+			
+			if(adv) {
+				js.executeScript("arguments[0].click();",bspage.getWebElementLocator(BaseLocators.classContians,"close"));}
+				/*
+				 * boolean adv =
+				 * bspage.getWebElementLocator(BaseLocators.clickanywhere).isDisplayed();
+				 * if(adv) {js.executeScript("arguments[0].click();",
+				 * bspage.getWebElementLocator(BaseLocators.clickanywhere));} else {
+				 * System.out.println("Closed all popups"); }
+				 */
 			}
 		}
 		
